@@ -31,6 +31,10 @@ func main() {
 			os.Exit(1)
 		}
 
+		if len(now) == 0 {
+			continue
+		}
+
 		if text == now {
 			continue
 		} else {
