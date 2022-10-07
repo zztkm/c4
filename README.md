@@ -15,4 +15,5 @@ Start c4
 c4
 ```
 
-When you copy some text, you will get a desktop notification.
+When you copy some text,  
+you will get a desktop notification.
