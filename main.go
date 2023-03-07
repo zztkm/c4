@@ -13,11 +13,11 @@ import (
 
 var logger zerolog.Logger
 
-func run() {
+func run() int {
 	text, err := clipboard.ReadAll()
 	if err != nil {
 		logger.Error().Err(err).Send()
-		os.Exit(1)
+		return 1
 	}
 
 	// 無限ループしながらclipboardが更新されるのを待つ
@@ -26,7 +26,7 @@ func run() {
 		now, err := clipboard.ReadAll()
 		if err != nil {
 			logger.Error().Err(err).Send()
-			os.Exit(1)
+			return 1
 		}
 
 		if len(now) == 0 {
@@ -41,7 +41,8 @@ func run() {
 			logger.Info().Str("text", now).Int("count", len).Send()
 			err := beeep.Notify("c4", msg, "")
 			if err != nil {
-				panic(err)
+				logger.Error().Err(err).Send()
+				return 1
 			}
 			text = now
 		}
@@ -51,5 +52,5 @@ func run() {
 func main() {
 	consoleWriter := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
 	logger = zerolog.New(consoleWriter)
-	run()
+	os.Exit(run())
 }
